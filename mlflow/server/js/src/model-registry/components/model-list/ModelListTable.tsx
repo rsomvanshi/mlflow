@@ -17,7 +17,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -34,6 +34,7 @@ const getLatestVersionNumberByStage = (latestVersions: ModelInfoEntity[], stage:
 };
 
 enum ColumnKeys {
+  SELECT = 'select',
   NAME = 'name',
   LATEST_VERSION = 'latest_versions',
   LAST_MODIFIED = 'timestamp',
@@ -57,6 +58,16 @@ type ModelsColumnDef = ColumnDef<ModelEntity> & {
   meta?: { styles?: Interpolation<Theme> };
 };
 
+const RadioCheckbox = () => {
+  return <input type='radio' onChange={handleSelectedRadioChange} value='test' checked={false} />;
+};
+
+const handleSelectedRadioChange = () => {
+  console.log('************************************');
+  console.log('testing');
+  console.log('************************************');
+};
+
 export const ModelListTable = ({
   modelsData,
   orderByAsc,
@@ -70,10 +81,21 @@ export const ModelListTable = ({
   const tableColumns = useMemo(() => {
     const columns: ModelsColumnDef[] = [
       {
-        id: ColumnKeys.NAME,
-        enableSorting: true,
+        id: ColumnKeys.SELECT,
+        enableSorting: false,
         header: intl.formatMessage({
-          defaultMessage: 'Name',
+          defaultMessage: 'Select',
+          description: 'Select model to deploy',
+        }),
+        accessorKey: 'select',
+        cell: () => <RadioCheckbox />,
+        meta: { styles: { minWidth: 200, flex: 1 } },
+      },
+      {
+        id: 'Test',
+        enableSorting: false,
+        header: intl.formatMessage({
+          defaultMessage: 'Test',
           description: 'Column title for model name in the registered model page',
         }),
         accessorKey: 'name',
@@ -82,7 +104,7 @@ export const ModelListTable = ({
             <Tooltip title={getValue()}>{getValue()}</Tooltip>
           </Link>
         ),
-        meta: { styles: { minWidth: 200, flex: 1 } },
+        meta: { styles: { minWidth: 20, flex: 1 } },
       },
       {
         id: ColumnKeys.LATEST_VERSION,

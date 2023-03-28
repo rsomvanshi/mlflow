@@ -50,6 +50,16 @@ const LAST_MODIFIED_COLUMN_INDEX = 'last_updated_timestamp';
 const getOverallLatestVersionNumber = (latest_versions) =>
   latest_versions && Math.max(...latest_versions.map((v) => v.version));
 
+const RadioCheckbox = () => {
+  return <input type='radio' onChange={handleSelectedRadioChange} value='test' checked={false} />;
+};
+
+const handleSelectedRadioChange = () => {
+  console.log('************************************');
+  console.log('testing');
+  console.log('************************************');
+};
+
 const getLatestVersionNumberByStage = (latest_versions, stage) => {
   const modelVersion = latest_versions && latest_versions.find((v) => v.current_stage === stage);
   return modelVersion && modelVersion.version;
@@ -144,6 +154,16 @@ export class ModelListViewImpl extends React.Component {
 
   getColumns = () => {
     const columns = [
+      {
+        title: this.props.intl.formatMessage({
+          defaultMessage: 'Select',
+          description: 'Select model to deploy',
+        }),
+        width: '2%',
+        render: () => {
+          return <RadioCheckbox />;
+        },
+      },
       {
         title: this.props.intl.formatMessage({
           defaultMessage: 'Name',
@@ -493,6 +513,15 @@ export class ModelListViewImpl extends React.Component {
                           })}
                         />
                       </div>
+                      <Button
+                          data-test-id='deploy-button'
+                      >
+                        <FormattedMessage
+                            defaultMessage='Deploy'
+                            // eslint-disable-next-line max-len
+                            description='Deploy the selected model'
+                        />
+                      </Button>
                       <Button
                         data-test-id='clear-button'
                         onClick={this.handleClear}
