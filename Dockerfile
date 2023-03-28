@@ -22,12 +22,12 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
     apt-get autoremove -yqq --purge && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm cache clean --force && \
     yarn cache clean --all && \
-    find / -type d -name '*__pycache__' -prune -exec rm -rf {} \; && \
+    find / -type d -name '*__pycache__' -prune -exec rm -rf {} \;
     # adding an unprivileged user
-    groupadd --gid 10001 mlflow && \
-    useradd --uid 10001 --gid mlflow --shell /bin/bash --create-home mlflow
+    #groupadd --gid 10001 mlflow && \
+    #useradd --uid 10001 --gid mlflow --shell /bin/bash --create-home mlflow
 
 # the "mlflow" user created above, represented numerically for optimal compatibility with Kubernetes security policies
-USER 10001
+#USER 10001
 
 CMD ["bash"]
