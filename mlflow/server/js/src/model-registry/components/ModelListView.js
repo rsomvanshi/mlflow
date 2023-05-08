@@ -45,6 +45,7 @@ import { shouldUseUnifiedListPattern } from '../../common/utils/FeatureUtils';
 import { PageContainer } from '../../common/components/PageContainer';
 import {RenameExperimentModal} from "../../experiment-tracking/components/modals/RenameExperimentModal";
 import {GetLinkModal} from "../../experiment-tracking/components/modals/GetLinkModal";
+import {DeployModelModal} from "./model-list/DeployModelModal";
 
 const NAME_COLUMN_INDEX = 'name';
 const LAST_MODIFIED_COLUMN_INDEX = 'last_updated_timestamp';
@@ -77,6 +78,7 @@ export class ModelListViewImpl extends React.Component {
       showOnboardingHelper: this.showOnboardingHelper(),
       selectedModelName: undefined,
       showLinkModal: false,
+      showDeployModelModal: false,
     };
   }
 
@@ -395,7 +397,14 @@ export class ModelListViewImpl extends React.Component {
 
   handleDeployModel = (modelName) => () => {
     this.setState({
-      showLinkModal: true,
+      showDeployModelModal: true,
+    });
+  };
+
+  handleDeployModelModalClose = () => {
+    this.setState({
+      showDeployModelModal: false,
+      showLinkModal: true
     });
   };
 
@@ -580,10 +589,14 @@ export class ModelListViewImpl extends React.Component {
           />
         ) : (
           <>
+            <DeployModelModal
+              isOpen={this.state.showDeployModelModal}
+              onClose={this.handleDeployModelModalClose}
+            />
             <GetLinkModal
-                link={"https://kratos.nvidia.com/v2/".concat(this.state.selectedModelName)}
+                link={`https://xp-inference.kratos.nvidia.com/seldon/kratos-team/${this.state.selectedModelName}/v2/models/infer`}
                 visible={this.state.showLinkModal}
-                onCancel={() => setShowGetLinkModal(false)}
+                onCancel={() => this.setShowGetLinkModal(false)}
             />
             <Table
                 rowSelection={{
