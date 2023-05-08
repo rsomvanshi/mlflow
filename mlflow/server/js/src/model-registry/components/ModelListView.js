@@ -606,9 +606,7 @@ export class ModelListViewImpl extends React.Component {
           />
         ) : (
           <>
-            {this.state.showLoader && (
-              <Spinner />
-            )}
+            <Spinner size='large' css={ this.state.showLoader ? 'visible' : 'hidden' } />
             <DeployModelModal
               isOpen={this.state.showDeployModelModal}
               onClose={this.handleDeployModelModalClose}
