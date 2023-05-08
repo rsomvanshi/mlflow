@@ -410,6 +410,7 @@ export class ModelListViewImpl extends React.Component {
 
   handleDeployModelModalSubmit = () => {
     this.setState({
+      showDeployModelModal: false,
       showLoader: true
     });
     this.closeLoaderIn5Seconds();
@@ -419,7 +420,6 @@ export class ModelListViewImpl extends React.Component {
       setTimeout(() => {
         this.setState({
           showLoader: false,
-          showDeployModelModal: false,
           showLinkModal: true
         });
       }, 5000);
