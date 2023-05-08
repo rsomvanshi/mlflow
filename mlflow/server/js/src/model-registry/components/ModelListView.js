@@ -43,6 +43,8 @@ import { ModelListFilters } from './model-list/ModelListFilters';
 import { ModelListTable } from './model-list/ModelListTable';
 import { shouldUseUnifiedListPattern } from '../../common/utils/FeatureUtils';
 import { PageContainer } from '../../common/components/PageContainer';
+import {RenameExperimentModal} from "../../experiment-tracking/components/modals/RenameExperimentModal";
+import {GetLinkModal} from "../../experiment-tracking/components/modals/GetLinkModal";
 
 const NAME_COLUMN_INDEX = 'name';
 const LAST_MODIFIED_COLUMN_INDEX = 'last_updated_timestamp';
@@ -73,6 +75,8 @@ export class ModelListViewImpl extends React.Component {
       lastNavigationActionWasClickPrev: false,
       maxResultsSelection: REGISTERED_MODELS_PER_PAGE,
       showOnboardingHelper: this.showOnboardingHelper(),
+      selectedModelName: undefined,
+      showLinkModal: false,
     };
   }
 
@@ -389,6 +393,15 @@ export class ModelListViewImpl extends React.Component {
     this.props.onClear(this.setLoadingFalse, this.setLoadingFalse);
   };
 
+  handleDeployModel = (modelName) => () => {
+    this.setState({
+      showLinkModal: true,
+    });
+  };
+
+  setShowGetLinkModal = (value) => () => {
+    this.setState({showLinkModal: value});
+  };
   searchInputHelpTooltipContent = () => {
     return (
       <div className='search-input-tooltip-content'>
@@ -463,11 +476,14 @@ export class ModelListViewImpl extends React.Component {
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        this.setState({
+          selectedModelName: selectedRows[0].name,
+        })
       },
       getCheckboxProps: (record) => ({
         disabled: record.name === 'Disabled User', // Column configuration not to be checked
         name: record.name,
-      }),
+      })
     };
     return (
       <PageContainer data-test-id='ModelListView-container' usesFullHeight={isUnifiedListPattern}>
@@ -524,6 +540,8 @@ export class ModelListViewImpl extends React.Component {
                       </div>
                       <Button
                           data-test-id='deploy-button'
+                          disabled={!this.state.selectedModelName}
+                          onClick={this.handleDeployModel(this.state.selectedModelName)}
                       >
                         <FormattedMessage
                             defaultMessage='Deploy'
@@ -562,6 +580,11 @@ export class ModelListViewImpl extends React.Component {
           />
         ) : (
           <>
+            <GetLinkModal
+                link={"https://kratos.nvidia.com/v2/".concat(this.state.selectedModelName)}
+                visible={this.state.showLinkModal}
+                onCancel={() => setShowGetLinkModal(false)}
+            />
             <Table
                 rowSelection={{
                 type: "radio",
