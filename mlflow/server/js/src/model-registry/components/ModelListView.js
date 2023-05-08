@@ -79,6 +79,7 @@ export class ModelListViewImpl extends React.Component {
       selectedModelName: undefined,
       showLinkModal: false,
       showDeployModelModal: false,
+      showLoader: true,
     };
   }
 
@@ -404,7 +405,6 @@ export class ModelListViewImpl extends React.Component {
   handleDeployModelModalClose = () => {
     this.setState({
       showDeployModelModal: false,
-      showLinkModal: true
     });
   };
 
