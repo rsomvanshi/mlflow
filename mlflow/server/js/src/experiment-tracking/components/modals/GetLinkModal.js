@@ -6,7 +6,6 @@ import { CopyBox } from '../../../shared/building_blocks/CopyBox';
 
 export const GetLinkModal = ({ visible, onCancel, link }) => {
   return (
-      <div>
         <Modal
           title={
             <FormattedMessage defaultMessage='Get Link' description={'Title text for get-link modal'} />
@@ -14,12 +13,28 @@ export const GetLinkModal = ({ visible, onCancel, link }) => {
           visible={visible}
           onCancel={onCancel}
         >
-          <CopyBox copyText={link} />
+            <CopyBox copyText={link} />
+            <p className='create-modal-explanatory-text'>
+                <FormattedMessage
+                    defaultMessage='To monitor inference metrics.&nbsp;'
+                    description='Text for monitoring inference metrics'
+                />
+                <FormattedMessage
+                    defaultMessage='<link>Click here</link>'
+                    description='Inference metrics'
+                    values={{
+                        link: (chunks) => (
+                            // Reported during ESLint upgrade
+                            // eslint-disable-next-line react/jsx-no-target-blank
+                            <a href='https://ops-xpva.kratos.nvidia.com/d/kratos_xp_k8_namespace_pods/kratos-xp-kubernetes-namespace-pods?orgId=1&refresh=30s&var-datasource=Prometheus&var-namespace=kratos-team' target='_blank'>
+                                {chunks}
+                            </a>
+                        ),
+                    }}
+                />
+                .
+            </p>
         </Modal>
-        <div>
-            For monitoring: <a href="https://ops-xpva.kratos.nvidia.com/d/kratos_xp_k8_namespace_pods/kratos-xp-kubernetes-namespace-pods?orgId=1&refresh=30s&var-datasource=Prometheus&var-namespace=kratos-team" target="_blank" rel="noopener noreferrer">click here</a>
-        </div>
-      </div>
   );
 };
 
