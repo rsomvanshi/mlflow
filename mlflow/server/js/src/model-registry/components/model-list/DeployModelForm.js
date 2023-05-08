@@ -11,6 +11,7 @@ class DeployModelFormComponent extends Component {
   };
 
   paramKeys = ['Small', 'Medium', 'Large'];
+  modelVersions = ['Version V2', 'Version V1'];
 
   render() {
     return (
@@ -44,6 +45,35 @@ class DeployModelFormComponent extends Component {
                 ))}
             </Select>
         </Form.Item>
+          <Form.Item
+              label={this.props.intl.formatMessage({
+                  defaultMessage: 'Model Version',
+                  description: 'Label for model version',
+              })}
+              name="modelVersion"
+              rules={[
+                  {
+                      required: false,
+                  },
+              ]}
+          >
+              <Select
+                  css={styles.select}
+                  placeholder={
+                      <FormattedMessage
+                          defaultMessage='Please select model version'
+                          description='Placeholder text model version'
+                      />
+                  }
+                  value="Version V2"
+              >
+                  {this.modelVersions.map((key) => (
+                      <Select.Option value={key} key={key}>
+                          {key}
+                      </Select.Option>
+                  ))}
+              </Select>
+          </Form.Item>
       </Form>
     );
   }

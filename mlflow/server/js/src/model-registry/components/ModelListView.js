@@ -408,6 +408,23 @@ export class ModelListViewImpl extends React.Component {
     });
   };
 
+  handleDeployModelModalSubmit = () => {
+    this.setState({
+      showLoader: true
+    });
+    this.closeLoaderIn5Seconds();
+  };
+
+  closeLoaderIn5Seconds = () => {
+      setTimeout(() => {
+        this.setState({
+          showLoader: false,
+          showDeployModelModal: false,
+          showLinkModal: true
+        });
+      }, 5000);
+  };
+
   setShowGetLinkModal = (value) => () => {
     this.setState({showLinkModal: value});
   };
@@ -589,14 +606,18 @@ export class ModelListViewImpl extends React.Component {
           />
         ) : (
           <>
+            {this.state.showLoader && (
+              <Spinner />
+            )}
             <DeployModelModal
               isOpen={this.state.showDeployModelModal}
               onClose={this.handleDeployModelModalClose}
+              handleSubmit={this.handleDeployModelModalSubmit}
             />
             <GetLinkModal
                 link={`https://xp-inference.kratos.nvidia.com/seldon/kratos-team/${this.state.selectedModelName}/v2/models/infer`}
                 visible={this.state.showLinkModal}
-                onCancel={() => this.setShowGetLinkModal(false)}
+                onCancel={this.setShowGetLinkModal(false)}
             />
             <Table
                 rowSelection={{
