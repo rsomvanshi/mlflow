@@ -29,5 +29,6 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
 
 # the "mlflow" user created above, represented numerically for optimal compatibility with Kubernetes security policies
 #USER 10001
+RUN python setup.py install
 
 CMD ["bash"]
