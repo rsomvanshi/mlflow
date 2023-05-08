@@ -154,16 +154,16 @@ export class ModelListViewImpl extends React.Component {
 
   getColumns = () => {
     const columns = [
-      {
-        title: this.props.intl.formatMessage({
-          defaultMessage: 'Select',
-          description: 'Select model to deploy',
-        }),
-        width: '2%',
-        render: () => {
-          return <RadioCheckbox />;
-        },
-      },
+      // {
+      //   title: this.props.intl.formatMessage({
+      //     defaultMessage: 'Select',
+      //     description: 'Select model to deploy',
+      //   }),
+      //   width: '2%',
+      //   render: () => {
+      //     return <RadioCheckbox />;
+      //   },
+      // },
       {
         title: this.props.intl.formatMessage({
           defaultMessage: 'Name',
@@ -460,6 +460,15 @@ export class ModelListViewImpl extends React.Component {
         description='Header for displaying models in the model registry'
       />
     );
+    const rowSelection = {
+      onChange: (selectedRowKeys, selectedRows) => {
+        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      },
+      getCheckboxProps: (record) => ({
+        disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        name: record.name,
+      }),
+    };
     return (
       <PageContainer data-test-id='ModelListView-container' usesFullHeight={isUnifiedListPattern}>
         <div>
@@ -554,6 +563,10 @@ export class ModelListViewImpl extends React.Component {
         ) : (
           <>
             <Table
+                rowSelection={{
+                type: "radio",
+                ...rowSelection,
+                }}
               size='middle'
               rowKey={this.getRowKey}
               className='model-version-table'
