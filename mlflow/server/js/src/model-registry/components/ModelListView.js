@@ -410,8 +410,7 @@ export class ModelListViewImpl extends React.Component {
 
   handleDeployModelModalSubmit = () => {
     this.setState({
-      showDeployModelModal: false,
-      showLoader: true
+      showLoader: true,
     });
     this.closeLoaderIn5Seconds();
   };
@@ -420,6 +419,7 @@ export class ModelListViewImpl extends React.Component {
       setTimeout(() => {
         this.setState({
           showLoader: false,
+          showDeployModelModal: false,
           showLinkModal: true
         });
       }, 5000);
@@ -606,11 +606,11 @@ export class ModelListViewImpl extends React.Component {
           />
         ) : (
           <>
-            <Spinner size='large' css={ this.state.showLoader ? 'visible' : 'hidden' } />
             <DeployModelModal
               isOpen={this.state.showDeployModelModal}
               onClose={this.handleDeployModelModalClose}
               handleSubmit={this.handleDeployModelModalSubmit}
+              showLoader={this.state.showLoader}
             />
             <GetLinkModal
                 link={`https://xp-inference.kratos.nvidia.com/seldon/kratos-team/${this.state.selectedModelName}/v2/models/infer`}
