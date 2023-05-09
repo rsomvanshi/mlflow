@@ -79,7 +79,7 @@ export class ModelListViewImpl extends React.Component {
       selectedModelName: undefined,
       showLinkModal: false,
       showDeployModelModal: false,
-      showLoader: true,
+      showLoader: false,
     };
   }
 
