@@ -32,9 +32,13 @@ class Param(_MLflowObject):
     def to_proto(self):
         param = ProtoParam()
         k = str(self.key)
-        k = k.replace('/', '-').replace('..', '-').replace('.', '-').replace('[', '-').replace(']', '-').replace('$', '-')
+        k = k.replace('/', '-').replace('..', '-').replace('.', '-') \
+            .replace('[', '-').replace(']', '-').replace('$', '-') \
+            .replace("'", "").replace('"', '')
         v = str(self.value)
-        v = v.replace('/', '-').replace('..', '-').replace('.', '-').replace('[', '-').replace(']', '-').replace('$', '-')
+        v = v.replace('/', '-').replace('..', '-').replace('.', '-') \
+            .replace('[', '-').replace(']', '-').replace('$', '-') \
+            .replace("'", "").replace('"', '')
         param.key = k
         param.value = v
         return param
