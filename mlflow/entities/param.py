@@ -1,4 +1,5 @@
 import sys
+import base64
 
 from mlflow.entities._mlflow_object import _MLflowObject
 from mlflow.protos.service_pb2 import Param as ProtoParam
@@ -32,15 +33,13 @@ class Param(_MLflowObject):
     def to_proto(self):
         param = ProtoParam()
         k = str(self.key)
-        k = k.replace('/', '-').replace('..', '-').replace('.', '-') \
-            .replace('[', '-').replace(']', '-').replace('$', '-') \
-            .replace("'", "").replace('"', '')
+        k_enc = base64.urlsafe_b64encode(k.encode())
+        k_enc = k_enc.decode().replace("=", ' ')
         v = str(self.value)
-        v = v.replace('/', '-').replace('..', '-').replace('.', '-') \
-            .replace('[', '-').replace(']', '-').replace('$', '-') \
-            .replace("'", "").replace('"', '')
-        param.key = k
-        param.value = v
+        v_enc = base64.urlsafe_b64encode(v.encode())
+        v_enc = v_enc.decode().replace("=", ' ')
+        param.key = k_enc
+        param.value = v_enc
         return param
 
     @classmethod
