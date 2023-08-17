@@ -388,9 +388,12 @@ class TrackingServiceClient:
             s = set()
             params_batch_v2 = []
             for p in params_batch:
-                if p.key not in s:
-                    s.add(p.key)
-                    params_batch_v2.append(p)
+                try:
+                    if isinstance(p.key, str) and p.key not in s:
+                        s.add(p.key)
+                        params_batch_v2.append(p)
+                except Exception as ex:
+                    print(ex)
             self.store.log_batch(
                 run_id=run_id, metrics=metrics_batch, params=params_batch_v2, tags=tags_batch
             )
