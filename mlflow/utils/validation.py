@@ -81,6 +81,7 @@ def bad_path_message(name):
 
 def path_not_unique(name):
     norm = posixpath.normpath(name)
+    norm = norm.replace('/', '-').replace('..', '-').replace('.', '-')
     return norm != name or norm == "." or norm.startswith("..") or norm.startswith("/")
 
 
