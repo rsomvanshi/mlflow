@@ -385,9 +385,14 @@ class TrackingServiceClient:
             metrics_batch_size = max(metrics_batch_size, 0)
             metrics_batch = metrics[:metrics_batch_size]
             metrics = metrics[metrics_batch_size:]
-
+            s = set()
+            params_batch_v2 = []
+            for p in params_batch:
+                if p.key not in s:
+                    s.add(p.key)
+                    params_batch_v2.append(p)
             self.store.log_batch(
-                run_id=run_id, metrics=metrics_batch, params=params_batch, tags=tags_batch
+                run_id=run_id, metrics=metrics_batch, params=params_batch_v2, tags=tags_batch
             )
 
         for metrics_batch in chunk_list(metrics, chunk_size=MAX_METRICS_PER_BATCH):
