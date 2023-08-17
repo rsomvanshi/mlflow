@@ -35,9 +35,13 @@ class Param(_MLflowObject):
         k = str(self.key)
         k_enc = base64.urlsafe_b64encode(k.encode())
         k_enc = k_enc.decode().replace("=", ' ')
+        if len(k_enc) > 250:
+            k_enc = k_enc[:248]
         v = str(self.value)
         v_enc = base64.urlsafe_b64encode(v.encode())
         v_enc = v_enc.decode().replace("=", ' ')
+        if len(v_enc) > 250:
+            v_enc = v_enc[:248]
         param.key = k_enc
         param.value = v_enc
         return param
