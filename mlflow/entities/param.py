@@ -31,7 +31,7 @@ class Param(_MLflowObject):
 
     def to_proto(self):
         param = ProtoParam()
-        param.key = self.key
+        param.key = str(self.key)
         param.value = self.value
         return param
 
